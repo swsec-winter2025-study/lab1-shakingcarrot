@@ -1,0 +1,66 @@
+name: Autograding Tests
+'on':
+- push
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: test
+      id: test
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: test
+        setup-command: ''
+        command: "/bin/bash test.sh"
+        input: ''
+        expected-output: |-
+          Try crackme01
+          Yes, it is correct!
+          Try crackme01e
+          Yes, it is correct!
+          Try crackme02
+          Yes, it is correct!
+          Try crackme02e
+          Yes, it is correct!
+          Try crackme03
+          Yes, it is correct!
+          Try crackme03e
+          Yes, it is correct!
+          Try crackme04
+          Yes, it is correct!
+          Try crackme04e
+          Yes, it is correct!
+          Try crackme05
+          Yes, it is correct!
+          Try crackme05e
+          Yes, it is correct!
+          Try crackme06
+          Yes, it is correct!
+          Try crackme06e
+          Yes, it is correct!
+          Try crackme07
+          Yes, it is correct!
+          Try crackme07e
+          Yes, it is correct!
+          Try crackme08
+          Yes, it is correct!
+          Try crackme08e
+          Yes, it is correct!
+          Try crackme09
+          Yes, it is correct!
+        comparison-method: contains
+        timeout: 10
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        TEST_RESULTS: "${{steps.test.outputs.result}}"
+      with:
+        runners: test
